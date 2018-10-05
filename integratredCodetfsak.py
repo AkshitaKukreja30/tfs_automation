@@ -44,13 +44,28 @@ for filename in files:
     # }
   data= json.dumps(d)
   res = requests.post(url = url, data = data , headers = headers ,auth=HttpNtlmAuth('akshita.kukreja','Akshita@30')).json()
-  print(res['url'])
+  # print(res['url'])
+  try:
+     # print(res['url'])
+     res['url']
+     
+         
+
+  except Exception:
+    print("in catch of ",url)
+    print(res)
+    exit()
   fileName = open(path+filename,'rb').read()
   resFile = requests.post(url=' http://cyg249:8080/tfs/DefaultCollection/_apis/wit/attachments?uploadType=Simple&areaPath=akshitaK',
                       data=fileName,
                       headers={'Content-Type': 'application/octet-stream','Accept':'application/json;api-version=1.0'},
                       auth=HttpNtlmAuth('akshita.kukreja','Akshita@30')).json()
-  # print(resFile['url'])
+  try:
+    resFile['url']
+  except Exception:
+    print("in catch of Upload attachments")
+    print(resFile)
+    exit()
 
   dataForupdate = [
      {
@@ -78,22 +93,38 @@ for filename in files:
     data=updateData,
     headers={'Content-Type':'application/json-patch+json',
              'Accept':'application/json;api-version=1.0'},
-    auth=HttpNtlmAuth('akshita.kukreja','Akshita@30'))
+    auth=HttpNtlmAuth('akshita.kukreja','Akshita@30')).json()
+
+  try:
+    attachFileToTicket['relations'][0]['attributes']['name']
+
+  except Exception:
+    print("in catch of attach msg file to ticket")
+    print(attachFileToTicket)
+    exit()
+
+
   path2="C:\\Users\\akshita.kukreja\\Desktop\\JE\\"
   filename2="Issue Priority Definition and SLA.docx"
   fileName2 = open(path2+filename2,'rb').read()
-  resFile = requests.post(url=' http://cyg249:8080/tfs/DefaultCollection/_apis/wit/attachments?uploadType=Simple&areaPath=akshitaK',
-                      headers={'Content-Type': 'application/octet-stream','Accept':'application/json;api-version=1.0'},
+  resFile2 = requests.post(url=' http://cyg249:8080/tfs/DefaultCollection/_apis/wit/attachments?uploadType=Simple&areaPath=akshitaK',
+                      headers={'Accept':'application/json;api-version=1.0','Content-Type': 'application/octet-stream'},
                       data=fileName2,
                       auth=HttpNtlmAuth('akshita.kukreja','Akshita@30')).json()
   
+  try:
+    resFile2['url']
+  except Exception:
+    print("in catch of Upload attachment2")
+    print(resFile2)
+    exit()
   dataForupdate2 = [
      {
       "op": "add",
       "path": "/relations/-",
       "value": {
         "rel": "AttachedFile",
-        "url": resFile['url'],
+        "url": resFile2['url'],
         "attributes": {
           
           "name":filename2
@@ -109,9 +140,19 @@ for filename in files:
   ]
   id =res['id']
   updateData2 = json.dumps(dataForupdate2)
-  attachFileToTicket = requests.patch(url='http://cyg249:8080/tfs/defaultcollection/_apis/wit/workitems/'+str(id),
+  attachFileToTicket2 = requests.patch(url='http://cyg249:8080/tfs/defaultcollection/_apis/wit/workitems/'+str(id),
     data=updateData2,
     headers={'Content-Type':'application/json-patch+json',
-             'Accept':'application/json;api-version=1.0'},
-    auth=HttpNtlmAuth('akshita.kukreja','Akshita@30'))
-print("done")
+              'Accept':'application/json;api-version=1.0'},
+    auth=HttpNtlmAuth('akshita.kukreja','Akshita@30')).json()
+  try:
+    attachFileToTicket2['relations'][1]['attributes']['name']
+  except:
+    print("in catch of attach doc file to ticket")
+    print(attachFileToTicket2)
+    exit()
+  
+  #move file to processed
+  print(res['url'])
+
+  print("done")
