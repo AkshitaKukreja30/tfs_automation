@@ -30,7 +30,7 @@ for filename in files:
     {
        "op": "add",
        "path": "/fields/System.IterationPath",
-       "value": "ALL_SUPPORT\\2018 - October 01st to October 05th"
+       "value": "ALL_SUPPORT\\2018 - October 08th to October 12th"
      },
      {
        "op": "add",
